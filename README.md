@@ -1,5 +1,10 @@
 # IPHeader
 A simple program to generate normal IPHeader.
+## COMPILE
+Currently this program can only be compiled and run on windows platform.
+It's recommended to compile it via Visual Studio by opening the 
+whole solution.  
+**As I used the winsock32.h, the library winsock32.lib must be added into the reference when linking.**
 ## INPUT
 The source and destination IP addresses.
 ## OUTPUT
