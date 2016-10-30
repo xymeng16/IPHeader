@@ -17,14 +17,15 @@ IPHeader::IPHeader(string src, string dst)
 	SetVer(VER_IPV4);
 	SetHdrLen(20);
 	SetDiff();
-	SetTotalLen(0x14);
-	SetId(0xD667);
+	SetTotalLen(0x1C);
+	SetId(0x1);
 	SetFlag(0x00);
 	SetOffset(0x0);
-	SetTTL(255);
-	SetProtocol(PTC_ICMP);
+	SetTTL(4);
+	SetProtocol(PTC_UDP);
 	SetSrcAddr(src);
 	SetDstAddr(dst);
+	cout << *this << endl;
 	SetCheckSum();
 }
 
@@ -83,7 +84,7 @@ void IPHeader::SetOffset(__int16 offset)
 
 void IPHeader::SetTTL(__int8 ttl)
 {
-	memcpy(header + 8, &ttl, 1);
+	memset(header + 8, ttl, 1);
 }
 
 void IPHeader::SetProtocol(__int32 ptc)
@@ -94,6 +95,8 @@ void IPHeader::SetProtocol(__int32 ptc)
 		memset(header + 9, 0x04, 1);
 	if (ptc == PTC_TCP)
 		memset(header + 9, 0x06, 1);
+	if (ptc == PTC_UDP)
+		memset(header + 9, 0x11, 1);
 }
 
 void IPHeader::SetCheckSum()
@@ -109,10 +112,11 @@ void IPHeader::SetCheckSum()
 	int n = totalLen / 2;
 	for (int i = 0; i < n; i++)
 	{
+		//hdr_ptr[i] = htons(hdr_ptr[i]);
 		sum += (hdr_ptr[i]);
 		//sum >>= 16; 
-		sum += (sum >> 16); // Add the carry bit to the sum.
 	}
+	sum = (sum >> 16) + sum & 0xFFFF; // Add the carry bit to the sum.
 	rtn = ~sum;
 	memcpy(header + 10, &rtn, 2);
 }

@@ -9,6 +9,7 @@ typedef unsigned char byte;
 #define PTC_ICMP 0x11FF
 #define PTC_IP 0x14FF
 #define PTC_TCP 0x16FF
+#define PTC_UDP 0x18FF
 class IPHeader
 {
 private:
